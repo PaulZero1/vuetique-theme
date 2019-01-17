@@ -31,7 +31,7 @@
           </div>
           <sidebar class="mobile-filters-body" :filters="filters.available"/>
         </div>
-        <div class="col-9 products-list">
+        <div class="col-12 md:col-9 products-list">
           <div v-if="isCategoryEmpty" class="hidden-xs">
             <h3 data-testid="noProductsInfo" class="mb-2">{{ $t('No products found!') }}</h3>
             <p class="text-grey-dark">{{ $t('Please change Your search criteria and try again. If still not finding anything relevant, please visit the Home page and try out some of our bestsellers!') }}</p>
@@ -66,8 +66,8 @@ export default {
   asyncData ({ store, route }) { // this is for SSR purposes to prefetch data - and it's always executed before parent component methods
     return new Promise((resolve, reject) => {
       store.state.category.current_product_query = Object.assign(store.state.category.current_product_query, { // this is just an example how can you modify the search criteria in child components
-        sort: 'updated_at:desc'
-        // searchProductQuery: builder().query('range', 'price', { 'gt': 0 }).andFilter('range', 'visibility', { 'gte': 2, 'lte': 4 }) // this is an example on how to modify the ES query, please take a look at the @vue-storefront/core/helpers for refernce on how to build valid query
+        sort: 'updated_at:desc',
+        includeFields: ['media_gallery']
       })
       resolve()
     })

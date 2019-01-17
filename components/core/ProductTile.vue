@@ -2,6 +2,8 @@
   <div
     class="product w-full pb-2 md:pb-5"
     v-observe-visibility="visibilityChanged"
+    @mouseenter="imageHover = true"
+    @mouseleave="imageHover = false"
   >
     <router-link
       class="block no-underline product-link"
@@ -73,6 +75,32 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    }
+  },
+  data () {
+    return {
+      imageHover: false
+    }
+  },
+  computed: {
+    hoverThumbnail () {
+      let thumbnail = this.product.image
+      if (this.product.media_gallery && this.product.media_gallery.length) {
+        for (let i = 0; i < this.product.media_gallery.length; i++) {
+          const media = this.product.media_gallery[i]
+          if (media.typ === 'image' && media.lab === 'alternative') {
+            thumbnail = media.image
+          }
+        }
+      }
+      return this.getThumbnail(thumbnail, 310, 300)
+    },
+    thumbnailObj () {
+      return {
+        src: this.imageHover ? this.hoverThumbnail : this.thumbnail,
+        loading: this.placeholder,
+        error: this.placeholder
+      }
     }
   },
   methods: {
